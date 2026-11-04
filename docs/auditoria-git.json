@@ -1,0 +1,8 @@
+{
+  "candidate_files": 1417,
+  "candidate_bytes": 74538662,
+  "large_files": [],
+  "secret_findings": [],
+  "oversized_files": [],
+  "scope": "Candidatos Git de la raiz original; heuristica, no prueba matematica de ausencia. PreparacionGitHub excluida; Git anterior sin commits archivado externamente."
+}

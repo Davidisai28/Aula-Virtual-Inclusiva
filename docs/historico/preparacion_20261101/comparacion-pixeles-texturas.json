@@ -1,0 +1,44 @@
+[
+  {
+    "embedded_image": "bark_brown_02_diff_2k",
+    "size": [
+      2048,
+      2048
+    ],
+    "pixel_exact_matches": []
+  },
+  {
+    "embedded_image": "Floor",
+    "size": [
+      8000,
+      8000
+    ],
+    "pixel_exact_matches": [
+      "Floor.png"
+    ]
+  },
+  {
+    "embedded_image": "roof1",
+    "size": [
+      8000,
+      8000
+    ],
+    "pixel_exact_matches": []
+  },
+  {
+    "embedded_image": "keyboard",
+    "size": [
+      1200,
+      507
+    ],
+    "pixel_exact_matches": []
+  },
+  {
+    "embedded_image": "EmergencyExit",
+    "size": [
+      400,
+      200
+    ],
+    "pixel_exact_matches": []
+  }
+]

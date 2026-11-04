@@ -1,0 +1,112 @@
+[
+  {
+    "ruta": "Assets/AulaVirtual/ModelsGLB.meta",
+    "bytes": 172,
+    "sha256": "9bc86e8305a63617bfd169f086d6dbd2429b73758704b8a24826973ac24fe92a"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Models/classroom.fbx",
+    "bytes": 6717340,
+    "sha256": "a208c7e0a8e8f6fb822fc9ed969ac358ceb3742533714808ad5498291cd74f64"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Models/classroom.fbx.meta",
+    "bytes": 13405,
+    "sha256": "81d72fe72803e136f279c63c9c47d7dbe32187d9eb9fd5a85f5999750f239d5c"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/ModelsGLB/classroom.glb",
+    "bytes": 100474996,
+    "sha256": "e26c0c5ad6393455a215a377b8e9a0aa29d16ae71a69947b9c2feb4dd4c76676"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/ModelsGLB/classroom.glb.meta",
+    "bytes": 720,
+    "sha256": "852c7227dcfd6b612f6c4ce4002ce23d71011d084606d91a72e84862a7310dd0"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/Ceiling.png",
+    "bytes": 33863362,
+    "sha256": "ebae91603da9c501c783132559da7877bc91dde7829341614776d558d3dc60aa"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/Ceiling.png.meta",
+    "bytes": 2714,
+    "sha256": "358d15a0b3595111ecdb99385b6e864cf9748c322e4d8922f6864ed8c65df2b4"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/EmergencyExit.png",
+    "bytes": 32928,
+    "sha256": "6007888c6e64f931753fb75b83562a06ea460d2ae995f1c788dbe400db42f7f2"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/EmergencyExit.png.meta",
+    "bytes": 2714,
+    "sha256": "ac63b75e061e8c7168d8d44144d18f0311935060d6c7a508c4427d02a4a5a37b"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/Floor.png",
+    "bytes": 52775434,
+    "sha256": "7db1d2b499f04e3beecb5bcd781f6beb36c3c19b2214b16d1aeeec1475b04810"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/Floor.png.meta",
+    "bytes": 2714,
+    "sha256": "4dd100f8207b6cda7ca8e36456eed4a335656067cd29c2df9502f3efb7c66ff1"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/keyboard.png",
+    "bytes": 97884,
+    "sha256": "03786b43deed72e912ca7c4e4371ace3807f486feb8fe68b9af05a82840a1ff1"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/keyboard.png.meta",
+    "bytes": 2714,
+    "sha256": "3056bc160c5ccc8c81523d666733e68d2de443d2cf5c4ecab6920b6bc0195a63"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood.meta",
+    "bytes": 172,
+    "sha256": "80682ae41e9644bef2354c3d80a9e245fca1bc932ac2571e2e355e029a90540f"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_diff_2k.jpg",
+    "bytes": 2356592,
+    "sha256": "285051e34826ace29f4ab438ad35cc1201b2aae0a6157a5f3c0bf6667bbc539e"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_diff_2k.jpg.meta",
+    "bytes": 2714,
+    "sha256": "42ed9e3912daa494fd92ee2d444880acb23c8076bdb71415f602718424123a50"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_disp_2k.png",
+    "bytes": 6555476,
+    "sha256": "9428b672837475fac8fbd4377e5b10a8b344fa3f2a5ee8fed66cccff9c0e67d8"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_disp_2k.png.meta",
+    "bytes": 2714,
+    "sha256": "47230948a8e9f4f5c4383b7cb92be79e7cf868499cae6690cd006d04db78b67f"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_nor_gl_2k.exr",
+    "bytes": 8446111,
+    "sha256": "b5f2839d08ab41213a309286f8a9042dffd8ed596a0bc9ec9357bd2295a8d89a"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_nor_gl_2k.exr.meta",
+    "bytes": 2714,
+    "sha256": "ec7305db61fedcea9e4823565cd80a4db7264038a6e83c662c8c0244b73785c0"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_rough_2k.jpg",
+    "bytes": 1236654,
+    "sha256": "adafcab150c1ca99150c77198329e251437dc00fa1f66019f75624366926996e"
+  },
+  {
+    "ruta": "Assets/AulaVirtual/Textures/wood/bark_brown_02_rough_2k.jpg.meta",
+    "bytes": 2714,
+    "sha256": "08eaf302f02d14ca48a8452b648781af95ddf81edfb7062d65c15629976f44ba"
+  }
+]

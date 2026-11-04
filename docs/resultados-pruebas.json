@@ -1,0 +1,60 @@
+{
+  "fecha": "2026-11-04",
+  "raiz_definitiva": "C:/U/Aula_Virtual_Inclusiva",
+  "respaldo_externo": "C:/U/Respaldos_AulaVirtual/OrganizacionRaiz_20261104_165837",
+  "unity": {
+    "ok": true,
+    "escena": "Assets/AulaVirtual/Scenes/AulaPrincipal_GLB.unity",
+    "scriptsFaltantes": 0,
+    "graficosSinRenderer": 0,
+    "rigsActivos": 1,
+    "eventSystemsActivos": 1,
+    "reproductores": 1,
+    "graficosSinRendererRutas": [],
+    "renderTexture": "RT_VideoAula",
+    "catalogo": true,
+    "cache": true,
+    "cine": true,
+    "asientos": true,
+    "alcance": "Inspeccion estructural en Editor; no Play Mode, no validacion visual ni Quest"
+  },
+  "compilacion_y_apertura_unity_exitcode": 0,
+  "archivos_unity_previos": 1444,
+  "archivos_unity_previos_modificados": [],
+  "node": "24.22.1",
+  "instalacion_backend": "npm ci con lock: 89 paquetes",
+  "pruebas_backend": {
+    "pasaron": 10,
+    "fallaron": 0
+  },
+  "drive_real": {
+    "health": 200,
+    "catalogo": 200,
+    "videos": 2,
+    "descarga": 200,
+    "bytes": 11295626,
+    "completo": true,
+    "cabecera_mp4": true,
+    "video_guardado": false
+  },
+  "git": {
+    "rama": "main",
+    "commits": 0,
+    "remotos": 0,
+    "git_anterior_archivado": true,
+    "archivos_candidatos": 1417,
+    "ningun_esencial_omitido": true,
+    "publicacion_realizada": false
+  },
+  "publicado_github": false,
+  "render_desplegado": false,
+  "apk_generada": false,
+  "pendientes": [
+    "Revision del propietario antes de commit/publicacion",
+    "Autenticacion o politica de material publico",
+    "Condiciones/cuotas sin facturacion en cuentas reales",
+    "URL HTTPS real",
+    "Pruebas visuales Play Mode y Quest 3S",
+    "Derechos de colaboradores y procedencia de Ceiling"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "candidatos": 1417,
+  "esenciales_incluidos": [
+    "Assets/AulaVirtual/Scenes/AulaPrincipal_GLB.unity",
+    "Assets/AulaVirtual/Scripts/CatalogoVideosDrive.cs",
+    "Assets/AulaVirtual/Scripts/GestorCacheVideos.cs",
+    "Packages/manifest.json",
+    "Packages/packages-lock.json",
+    "ProjectSettings/ProjectSettings.asset",
+    "backend/server.js",
+    "backend/package-lock.json",
+    "backend/.env.example"
+  ],
+  "esenciales_omitidos": [],
+  "exclusiones_verificadas": {
+    "Library/prueba": true,
+    "Temp/prueba": true,
+    "Logs/prueba": true,
+    "Backups/prueba": true,
+    "PreparacionGitHub/prueba": true,
+    "backend/node_modules/prueba": true,
+    "backend/.env": true,
+    "prueba.apk": true,
+    "credenciales/service-account.json": true,
+    "Assets/AulaVirtual/ModelsGLB/classroom.glb": true,
+    "Assets/AulaVirtual/Textures/Floor.png": true,
+    "Assets/AulaVirtual/Textures/Ceiling.png": true
+  },
+  "remotos": [],
+  "rama": "main"
+}

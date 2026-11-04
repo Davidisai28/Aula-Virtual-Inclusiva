@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^5.3.0",
+    "googleapis": "^188.0.0"
+  },
+  "name": "aula-virtual-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

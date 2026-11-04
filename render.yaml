@@ -1,0 +1,28 @@
+# Plantilla, NO desplegada. Se requiere autorizacion y revisar docs/GRATUIDAD.md.
+services:
+  - type: web
+    name: aula-virtual-backend
+    runtime: node
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: "off"
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/google-service-account.json
+      - key: ALLOW_PUBLIC_CATALOG
+        value: "false"
+# Crear Secret File en el panel: google-service-account.json. NUNCA en este archivo.
+# ALLOW_PUBLIC_CATALOG=false bloquea inicio hasta decidir autenticacion o material publico.

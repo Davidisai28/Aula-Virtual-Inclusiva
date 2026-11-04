@@ -1,0 +1,7 @@
+{
+  "candidate_files": 1409,
+  "candidate_bytes": 76341684,
+  "large_files": [],
+  "secret_findings": [],
+  "scope": "Archivos candidatos Git; heuristica, no prueba matematica de ausencia. Sin historial previo."
+}

@@ -1,0 +1,18 @@
+* text=auto
+*.cs text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.unity text eol=lf
+*.prefab text eol=lf
+*.meta text eol=lf
+*.mat text eol=lf
+*.asset binary
+*.png binary
+*.jpg binary
+*.fbx binary
+*.glb binary
+# No activar LFS automaticamente: los 3 archivos >50MiB estan excluidos por licencia.
+# Si se autoriza su versionado, configurar LFS ANTES del primer commit de esos recursos.

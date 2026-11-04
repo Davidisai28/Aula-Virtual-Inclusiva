@@ -1,0 +1,59 @@
+{
+  "fecha": "2026-11-01",
+  "runtime": "Node 24.22.1 LTS (portable existente, sin cambiar instalacion global)",
+  "tests_backend": {
+    "pasaron": 10,
+    "fallaron": 0
+  },
+  "prueba_drive_original": {
+    "health": 200,
+    "catalogo": 200,
+    "videos": 2,
+    "descarga": 200,
+    "bytes": 11295626,
+    "longitud_correcta": true,
+    "cabecera_mp4": true,
+    "archivo_guardado": false
+  },
+  "unity_csharp": "Compilacion runtime/Editor con Roslyn y compilacion nativa de la copia correctas",
+  "escena": {
+    "sha256_original_respaldo_copia": "b1797ec5e417b6a6e6f0ba9f26693d4963d1f0d830f1456c305a7cd60ac9ef7d",
+    "guardada_automaticamente": false
+  },
+  "pendientes": [
+    "Validacion visual completa al abrir copia en Unity",
+    "URL HTTPS real y Render",
+    "Autenticacion/politica publica",
+    "Quest 3S fisico",
+    "Procedencia exacta de Ceiling.png"
+  ],
+  "prueba_drive_monorepo_node24": {
+    "health": 200,
+    "catalogo": 200,
+    "videos": 2,
+    "descarga": 200,
+    "bytes": 11295626,
+    "longitud_correcta": true,
+    "cabecera_mp4": true,
+    "ok": true
+  },
+  "produccion_bloqueada_por_defecto": true,
+  "unity_importacion_batch_exitcode": 0,
+  "unity_inspeccion_escena": {
+    "ok": true,
+    "escena": "Assets/AulaVirtual/Scenes/AulaPrincipal_GLB.unity",
+    "scriptsFaltantes": 0,
+    "graficosSinRenderer": 0,
+    "rigsActivos": 1,
+    "eventSystemsActivos": 1,
+    "reproductores": 1,
+    "graficosSinRendererRutas": [],
+    "renderTexture": "RT_VideoAula",
+    "catalogo": true,
+    "cache": true,
+    "cine": true,
+    "asientos": true,
+    "alcance": "Inspeccion estructural en Editor; no Play Mode, no validacion visual ni Quest"
+  },
+  "comprobador_preserva_urp_fuente_escena": true
+}

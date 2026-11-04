@@ -1,0 +1,24 @@
+[
+  {
+    "embedded_image": "bark_brown_02_diff_2k",
+    "exact_matches": []
+  },
+  {
+    "embedded_image": "Floor",
+    "exact_matches": [
+      "Assets\\AulaVirtual\\Textures\\Floor.png"
+    ]
+  },
+  {
+    "embedded_image": "roof1",
+    "exact_matches": []
+  },
+  {
+    "embedded_image": "keyboard",
+    "exact_matches": []
+  },
+  {
+    "embedded_image": "EmergencyExit",
+    "exact_matches": []
+  }
+]

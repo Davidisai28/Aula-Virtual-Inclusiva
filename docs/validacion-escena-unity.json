@@ -1,0 +1,16 @@
+{
+    "ok": true,
+    "escena": "Assets/AulaVirtual/Scenes/AulaPrincipal_GLB.unity",
+    "scriptsFaltantes": 0,
+    "graficosSinRenderer": 0,
+    "rigsActivos": 1,
+    "eventSystemsActivos": 1,
+    "reproductores": 1,
+    "graficosSinRendererRutas": [],
+    "renderTexture": "RT_VideoAula",
+    "catalogo": true,
+    "cache": true,
+    "cine": true,
+    "asientos": true,
+    "alcance": "Inspeccion estructural en Editor; no Play Mode, no validacion visual ni Quest"
+}
