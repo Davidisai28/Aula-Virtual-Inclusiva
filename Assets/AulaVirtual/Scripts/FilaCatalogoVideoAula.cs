@@ -10,6 +10,8 @@ public sealed class FilaCatalogoVideoAula : MonoBehaviour
     public void Mostrar(VideoInfoDrive video, bool cacheComprobada, System.Action<VideoInfoDrive> accion = null)
     {
         this.video = video; seleccionar = accion;
+        MiniaturaVideoAula.PrepararFila(transform);
+        transform.Find("Miniatura").GetComponent<MiniaturaVideoAula>().Mostrar(video);
         Texto("NombreTMP", NombreVisible(video.name));
         Texto("EstadoTMP", FormatearTamano(video.size) + (cacheComprobada ? " · Caché verificada" : " · Disponibilidad sin comprobar"));
         Texto("IconoTMP", "VID");

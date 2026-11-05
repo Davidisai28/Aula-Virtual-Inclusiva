@@ -14,6 +14,7 @@ public class VideoInfoDrive
     public string mimeType;
     public string size;
     public string modifiedTime;
+    public string thumbnailPath; // Opcional y relativa al backend; nunca credenciales de Drive.
 }
 
 [Serializable]

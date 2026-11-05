@@ -23,6 +23,64 @@ test('health sin consultar Drive', async t => {
   const url = await server(t, fake({ list: () => { throw Error('No debe llamarse'); } }));
   assert.deepEqual(await (await fetch(url + '/health')).json(), { status: 'ok' });
 });
+
+const jpeg = Buffer.from([255, 216, 255, 224, 0, 1]);
+test('catalogo expone ruta relativa, nunca el enlace privado de Drive', async t => {
+  const url = await server(t, fake({ list: async () => ({ data: { files: [{ ...video, hasThumbnail: true, thumbnailLink: 'enlace-privado' }] } }) }));
+  const r = await (await fetch(url + '/api/videos')).json();
+  assert.equal(r.videos[0].thumbnailPath, `/api/videos/${id}/thumbnail`);
+  assert.ok(!JSON.stringify(r).includes('enlace-privado'));
+});
+test('miniatura verifica carpeta, limita memoria y reutiliza imagen sin saltarse permisos', async t => {
+  let transfers = 0, checks = 0;
+  const drive = fake({ get: async () => { checks++; return { data: { ...video, thumbnailLink: 'privado' } }; } });
+  drive.fetchThumbnail = async () => { transfers++; return { bytes: jpeg }; };
+  const url = await server(t, drive);
+  for (let i = 0; i < 2; i++) {
+    const r = await fetch(`${url}/api/videos/${id}/thumbnail`);
+    assert.equal(r.status, 200); assert.equal(r.headers.get('content-type'), 'image/jpeg');
+    assert.deepEqual(Buffer.from(await r.arrayBuffer()), jpeg);
+  }
+  assert.equal(transfers, 1); assert.equal(checks, 2);
+  assert.equal((await fetch(url + '/api/videos/otro_video_123/thumbnail')).status, 404);
+  assert.equal(checks, 2);
+});
+test('miniaturas ausentes o denegadas no rompen el catalogo', async t => {
+  const absent = await server(t, fake());
+  assert.equal((await fetch(`${absent}/api/videos/${id}/thumbnail`)).status, 404);
+  assert.equal((await fetch(absent + '/api/videos')).status, 200);
+  const drive = fake({ get: async () => ({ data: { ...video, parents: ['otra_carpeta_123'], thumbnailLink: 'privado' } }) });
+  drive.fetchThumbnail = async () => { throw Error('No debe pedirse'); };
+  const denied = await server(t, drive);
+  assert.equal((await fetch(`${denied}/api/videos/${id}/thumbnail`)).status, 403);
+});
+test('rechaza imagenes grandes o contenido que no sea PNG/JPEG sin filtrar errores', async t => {
+  for (const bytes of [Buffer.alloc(256*1024+1), Buffer.from('<html>SECRETO_PRUEBA</html>')]) {
+    const drive = fake({ get: async () => ({ data: { ...video, thumbnailLink: 'privado' } }) });
+    drive.fetchThumbnail = async () => ({ bytes });
+    const url = await server(t, drive); const r = await fetch(`${url}/api/videos/${id}/thumbnail`);
+    assert.equal(r.status, 502); assert.ok(!(await r.text()).includes('SECRETO_PRUEBA'));
+  }
+});
+test('proxy solo admite HTTPS googleusercontent y no acepta credenciales ni destinos arbitrarios', () => {
+  const { thumbnailUrl } = require('../src/thumbnails');
+  assert.equal(thumbnailUrl('https://lh3.googleusercontent.com/test'), 'https://lh3.googleusercontent.com/test');
+  for (const value of ['http://lh3.googleusercontent.com/test','https://localhost/test',
+    'https://lh3.googleusercontent.com.evil.invalid/test','https://user:pass@lh3.googleusercontent.com/test'])
+    assert.throws(() => thumbnailUrl(value));
+});
+test('la cache de miniaturas no evita comprobar permisos revocados ni el presupuesto', async t => {
+  let denied = false;
+  const drive = fake({ get: async () => ({ data: { ...video, thumbnailLink: 'privado', capabilities: { canDownload: !denied } } }) });
+  drive.fetchThumbnail = async () => ({ bytes: jpeg });
+  const url = await server(t, drive);
+  assert.equal((await fetch(`${url}/api/videos/${id}/thumbnail`)).status, 200);
+  denied = true;
+  assert.equal((await fetch(`${url}/api/videos/${id}/thumbnail`)).status, 403);
+  denied = false;
+  const limited = await server(t, drive, { hourlyBytes: 1 });
+  assert.equal((await fetch(`${limited}/api/videos/${id}/thumbnail`)).status, 429);
+});
 test('catalogo pagina, conserva formato y comparte consultas simultaneas', async t => {
   let calls = 0;
   const url = await server(t, fake({ list: async args => {

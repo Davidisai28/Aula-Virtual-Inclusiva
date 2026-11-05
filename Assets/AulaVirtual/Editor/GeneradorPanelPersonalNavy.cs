@@ -192,6 +192,7 @@ public sealed class GeneradorPanelPersonalNavy : EditorWindow
         var progress=Superficie(row,"ProgresoDescarga",36,204,1040,4,"294B70","294B70",1,2);
         Superficie(progress,"Relleno",0,0,0,4,"80CFC7","80CFC7",1,2);
         progress.gameObject.SetActive(false);
+        MiniaturaVideoAula.PrepararFila(row);
         row.gameObject.AddComponent<FilaCatalogoVideoAula>(); row.gameObject.SetActive(false); ui.plantillaFila=row.gameObject;
         ui.totalVideos=Texto(fondo,"TotalVideos","0 videos",64,720,300,72,40,C("A9BDD3"));
         ui.totalVideos.alignment=TextAlignmentOptions.MidlineLeft;

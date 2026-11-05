@@ -407,6 +407,7 @@ public sealed class GeneradorBibliotecaVideoXR : EditorWindow
         Boton(r, "AccionVideo", action, 1136, 54, 300, 100, true, font);
         var progress = Glass(r, "ProgresoDescarga", 36, 204, 1040, 4, Hex("42494A"), Hex("42494A"), 2);
         Glass(progress, "Relleno", 0, 0, 0, 4, Turquesa, Turquesa, 2);
-        progress.gameObject.SetActive(downloading); return r;
+        progress.gameObject.SetActive(downloading);
+        MiniaturaVideoAula.PrepararFila(r); return r;
     }
 }

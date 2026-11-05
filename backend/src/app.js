@@ -2,6 +2,7 @@
 const express = require("express");
 const { pipeline } = require("node:stream/promises");
 const { Transform } = require("node:stream");
+const { fetchThumbnail, imageType, MAX_BYTES } = require("./thumbnails");
 const ID = /^[A-Za-z0-9_-]{10,200}$/;
 function createDrive() {
   const { google } = require("googleapis");
@@ -11,7 +12,10 @@ function createDrive() {
     if (credentials.type !== "service_account" || !credentials.client_email || !credentials.private_key) throw new Error("Credenciales invalidas");
     options.credentials = credentials;
   }
-  return google.drive({ version: "v3", auth: new google.auth.GoogleAuth(options) });
+  const auth = new google.auth.GoogleAuth(options);
+  const drive = google.drive({ version: "v3", auth });
+  // El cliente oficial no permite agregar propiedades; conservarlo sin mutaciones.
+  return { files: drive.files, fetchThumbnail: (link, signal) => fetchThumbnail(auth, link, signal) };
 }
 function createApp({ drive, folderId, behindProxy = false, maxRequests = 30, maxDownloads = 2,
   maxVideoBytes = 512 * 1024 * 1024, hourlyBytes = 256 * 1024 * 1024 }) {
@@ -20,6 +24,7 @@ function createApp({ drive, folderId, behindProxy = false, maxRequests = 30, max
   if (behindProxy) app.set("trust proxy", 1);
   const clients = new Map(), downloads = new Map(), controllers = new Set();
   let cache = null, cacheUntil = 0, pending = null, active = 0, spent = 0, reset = Date.now() + 3600000;
+  const thumbnails = new Map(); let activeThumbnails = 0;
   app.locals.shutdown = () => { for (const controller of controllers) controller.abort(); };
   app.use((req, res, next) => { res.set("X-Content-Type-Options", "nosniff"); res.set("Cache-Control", "no-store"); next(); });
   app.get("/health", (req, res) => res.json({ status: "ok" }));
@@ -41,10 +46,11 @@ function createApp({ drive, folderId, behindProxy = false, maxRequests = 30, max
       const videos = [], ids = new Set(), pages = new Set(); let pageToken;
       do {
         const response = await drive.files.list({ q: `'${folderId}' in parents and trashed = false and mimeType = 'video/mp4'`,
-          fields: "nextPageToken,files(id,name,mimeType,size,modifiedTime)", pageSize: 100, pageToken }, { timeout: 30000, retry: false });
+          fields: "nextPageToken,files(id,name,mimeType,size,modifiedTime,hasThumbnail)", pageSize: 100, pageToken }, { timeout: 30000, retry: false });
         for (const v of response.data.files || []) {
           if (!ID.test(v.id) || ids.has(v.id)) continue;
-          ids.add(v.id); videos.push({ id: v.id, name: v.name, mimeType: v.mimeType, size: v.size, modifiedTime: v.modifiedTime });
+          ids.add(v.id); videos.push({ id: v.id, name: v.name, mimeType: v.mimeType, size: v.size, modifiedTime: v.modifiedTime,
+            thumbnailPath: v.hasThumbnail ? `/api/videos/${v.id}/thumbnail` : null });
         }
         pageToken = response.data.nextPageToken;
         if (videos.length > 10000 || pages.size >= 100 || (pageToken && pages.has(pageToken))) throw new Error("Catalogo excedido");
@@ -57,6 +63,45 @@ function createApp({ drive, folderId, behindProxy = false, maxRequests = 30, max
   app.get("/api/videos", async (req, res) => {
     try { res.json(await loadCatalog()); }
     catch { res.status(503).json({ error: "No se pudo consultar la biblioteca; reintenta mas tarde" }); }
+  });
+  app.get("/api/videos/:id/thumbnail", async (req, res) => {
+    const fileId = req.params.id;
+    if (!ID.test(fileId)) return res.status(400).json({ error: "Identificador invalido" });
+    if (activeThumbnails >= 2) return res.status(429).json({ error: "Miniaturas ocupadas" });
+    activeThumbnails++;
+    const controller = new AbortController(); controllers.add(controller);
+    const timer = setTimeout(() => controller.abort(), 30000); timer.unref();
+    const abort = () => { if (!res.writableFinished) controller.abort(); };
+    req.once("aborted", abort); res.once("close", abort);
+    try {
+      const catalog = await loadCatalog();
+      if (!catalog.videos.some(v => v.id === fileId)) return res.status(404).end();
+      // Comprobar permisos actuales incluso cuando la imagen está en memoria.
+      const { data: video } = await drive.files.get({ fileId,
+        fields: "mimeType,parents,trashed,thumbnailLink,modifiedTime,capabilities(canDownload)" },
+        { signal: controller.signal, timeout: 15000, retry: false });
+      if (video.trashed || video.mimeType !== "video/mp4" || !video.parents?.includes(folderId) || video.capabilities?.canDownload === false)
+        return res.status(403).end();
+      if (!video.thumbnailLink || !drive.fetchThumbnail) return res.status(404).end();
+      let image = thumbnails.get(fileId);
+      if (!image || image.until <= Date.now() || image.version !== video.modifiedTime) {
+        const result = await drive.fetchThumbnail(video.thumbnailLink, controller.signal);
+        if (!Buffer.isBuffer(result.bytes) || result.bytes.length > MAX_BYTES) throw Error("Imagen invalida");
+        image = { bytes: result.bytes, type: imageType(result.bytes), version: video.modifiedTime, until: Date.now() + 60000 };
+        if (thumbnails.size >= 32) thumbnails.delete(thumbnails.keys().next().value);
+        thumbnails.set(fileId, image);
+      }
+      if (Date.now() >= reset) { spent = 0; reset = Date.now() + 3600000; }
+      if (spent + image.bytes.length > hourlyBytes) return res.status(429).end();
+      spent += image.bytes.length;
+      res.set("Content-Type", image.type); res.set("Content-Length", String(image.bytes.length));
+      res.send(image.bytes);
+    } catch {
+      if (!res.headersSent && !res.destroyed) res.status(502).json({ error: "Miniatura no disponible" });
+    } finally {
+      clearTimeout(timer); controller.abort(); controllers.delete(controller); activeThumbnails--;
+      req.off("aborted", abort); res.off("close", abort);
+    }
   });
   app.get("/api/videos/:id/download", async (req, res) => {
     const fileId = req.params.id, key = req.ip;
