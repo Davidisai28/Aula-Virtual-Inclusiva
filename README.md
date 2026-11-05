@@ -57,8 +57,9 @@ npm start
 
 No sobrescribir un .env existente. Ver [backend/README.md](backend/README.md).
 La configuración pública única de Unity sigue en
-`Assets/AulaVirtual/Resources/BibliotecaBackend.json`. Editor usa Local por defecto;
-Android exige la URL HTTPS real de Render, que permanece vacía hasta el despliegue autorizado.
+`Assets/AulaVirtual/Resources/BibliotecaBackend.json`. Editor usa Remoto por defecto:
+https://aula-virtual-inclusiva.onrender.com. Se puede seleccionar Local para desarrollo;
+Android utiliza siempre la URL remota HTTPS. Ver [CONEXION_RENDER.md](docs/CONEXION_RENDER.md).
 
 ## Verificar y contribuir
 
@@ -79,8 +80,9 @@ pero se excluyen de Git. Un clon requiere restauración legal para reproducir to
 Las claves/JSON privados, .env, keystores, APK y respaldos están excluidos. La auditoría es
 heurística y se complementa con revisión manual: [SEGURIDAD.md](docs/SEGURIDAD.md).
 
-Render está preparado con rama main, raíz backend, npm ci, npm start y plan Free.
-La producción permanece bloqueada hasta decidir autenticación o autorizar material público.
+El propietario publicó el backend en Render Free, con raíz backend, npm ci y npm start.
+El código conserva su bloqueo de producción salvo autorización explícita de material público;
+esta conexión de Unity no cambia autenticación, secretos ni configuración del servicio.
 No agregar tarjeta ni activar facturación. Revisar [GRATUIDAD.md](docs/GRATUIDAD.md) y cuotas
 reales antes de desplegar; no se promete disponibilidad gratuita ilimitada.
 

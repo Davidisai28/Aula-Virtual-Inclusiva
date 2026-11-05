@@ -9,6 +9,8 @@ public static class ConfiguracionBackendAula
         public string entornoEditor = "Local";
         public string urlLocal = "http://127.0.0.1:3000";
         public string urlRemota = "";
+        // Activar solo cuando Local y Remoto sirven la misma carpeta autorizada de Drive.
+        public bool compartirCatalogoGuardado;
     }
     static Datos datos;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -32,4 +34,20 @@ public static class ConfiguracionBackendAula
         return true;
     }
     public static string Obtener(string legado) => IntentarObtener(legado, out var url, out _) ? url : "";
+    public static bool EsCatalogoCompatible(string origenGuardado, string legado)
+    {
+        if (!IntentarObtener(legado, out var actual, out _)) return false;
+        string guardado = (origenGuardado ?? "").Trim().TrimEnd('/');
+        if (guardado == actual) return true;
+        if (!datos.compartirCatalogoGuardado) return false;
+        // Solo admite los dos orígenes configurados explícitamente. Nunca es fallback de red.
+        return EsOrigenConfigurado(guardado, datos.urlLocal) || EsOrigenConfigurado(guardado, datos.urlRemota);
+    }
+    static bool EsOrigenConfigurado(string guardado, string configurado)
+    {
+        string normalizado = (configurado ?? "").Trim().TrimEnd('/');
+        return guardado == normalizado && Uri.TryCreate(normalizado, UriKind.Absolute, out var uri) &&
+            (uri.Scheme == "http" || uri.Scheme == "https") && string.IsNullOrEmpty(uri.UserInfo) &&
+            string.IsNullOrEmpty(uri.Query) && string.IsNullOrEmpty(uri.Fragment);
+    }
 }

@@ -16,9 +16,12 @@ las modificaciones existentes ni reemplazar el XR Origin/EventSystem.
 6. Probar mouse, simulador XR y manos por separado. Quest físico y precisión real siguen pendientes.
 
 La configuración está centralizada en Assets/AulaVirtual/Resources/BibliotecaBackend.json:
-Local utiliza http://127.0.0.1:3000; Remoto requiere URL HTTPS real. Android siempre usa Remoto.
+Local utiliza http://127.0.0.1:3000; Remoto usa https://aula-virtual-inclusiva.onrender.com
+y está seleccionado por defecto. Android siempre usa Remoto.
 No inventar URL, no poner claves en este archivo. Detener Play antes de cambiar entorno.
 El cambio de URL necesita una primera consulta válida; los videos descargados no se borran.
+Para el cambio de localhost a este Render de la misma biblioteca se habilitó compartirCatalogoGuardado:
+permite recuperar el catálogo anterior offline sin conectar a localhost. Ver CONEXION_RENDER.md.
 
 ## Compilación estructural sin guardar escena
 

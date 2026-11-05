@@ -89,7 +89,7 @@ public sealed class BibliotecaVisualAula : MonoBehaviour
         }
         if (estadoCatalogo != null)
             estadoCatalogo.text = suscrito.Estado == CatalogoVideosDrive.EstadoConsulta.Cargando
-                ? "CARGANDO · Consultando biblioteca…" : suscrito.Mensaje;
+                ? "CARGANDO · " + suscrito.Mensaje : suscrito.Mensaje;
         if (suscrito.EnConsulta) { ActualizarPaginacion(); if(ocupadoPersonal) ActualizarEstadoVideo(); return; }
         LimpiarContenido();
         videosVisibles.Clear();

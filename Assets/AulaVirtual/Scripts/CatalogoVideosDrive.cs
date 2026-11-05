@@ -39,6 +39,9 @@ public class CatalogoVideosDrive : MonoBehaviour
     public bool EnConsulta { get; private set; }
     public bool TieneCatalogoValido { get; private set; }
     public bool EsCatalogoLocal { get; private set; }
+    public string ServidorActual => Origen;
+    public string UltimaConsultaUrl { get; private set; }
+    public long UltimoCodigoHttp { get; private set; }
     UnityWebRequest solicitud;
     string Origen => ConfiguracionBackendAula.Obtener(servidor);
     string RutaCatalogo => Path.Combine(Application.persistentDataPath, "catalogo-videos-drive.json");
@@ -80,16 +83,19 @@ public class CatalogoVideosDrive : MonoBehaviour
             return;
         }
         EnConsulta = true;
-        CambiarEstado(EstadoConsulta.Cargando, "Conectando con el servidor…");
+        CambiarEstado(EstadoConsulta.Cargando, "Conectando con el servidor...");
         StartCoroutine(ObtenerCatalogo());
     }
 
     private IEnumerator ObtenerCatalogo()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(Origen + "/api/videos"))
+        UltimaConsultaUrl = Origen + "/api/videos";
+        UltimoCodigoHttp = 0;
+        using (UnityWebRequest request = UnityWebRequest.Get(UltimaConsultaUrl))
         {
             solicitud = request;
             request.timeout = Origen.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ? 120 : 15;
+            Debug.Log("[CATALOGO-DRIVE] CONSULTA RED · " + UltimaConsultaUrl + " · timeout=" + request.timeout + " s", this);
 
             UnityWebRequestAsyncOperation operacion = null;
             try { operacion = request.SendWebRequest(); }
@@ -102,10 +108,21 @@ public class CatalogoVideosDrive : MonoBehaviour
                 Debug.LogWarning("[CATALOGO-DRIVE] " + e.Message, this);
             }
             if (operacion == null) yield break;
-            yield return operacion;
+            float inicio = Time.realtimeSinceStartup;
+            bool esperaAvisada = false;
+            while (!operacion.isDone)
+            {
+                if (!esperaAvisada && Time.realtimeSinceStartup - inicio >= 10)
+                {
+                    esperaAvisada = true;
+                    CambiarEstado(EstadoConsulta.Cargando, "Esperando al servidor · El inicio puede tardar");
+                }
+                yield return null;
+            }
 
             solicitud = null;
             EnConsulta = false;
+            UltimoCodigoHttp = request.responseCode;
             if (request.result != UnityWebRequest.Result.Success)
             {
                 EsCatalogoLocal = TieneCatalogoValido;
@@ -129,7 +146,7 @@ public class CatalogoVideosDrive : MonoBehaviour
             EsCatalogoLocal = false;
             GuardarUltimoCatalogo();
             CambiarEstado(EstadoConsulta.Conectado, "Conectado · " + catalogo.videos.Length + " videos");
-            Debug.Log("[CATALOGO-DRIVE] Catálogo recibido: " + catalogo.videos.Length + " videos.", this);
+            Debug.Log("[CATALOGO-DRIVE] HTTP " + UltimoCodigoHttp + " · RED · " + UltimaConsultaUrl + " · " + catalogo.videos.Length + " videos. No es el catálogo guardado.", this);
         }
     }
 
@@ -173,11 +190,12 @@ public class CatalogoVideosDrive : MonoBehaviour
         {
             if (!File.Exists(RutaCatalogo)) return;
             var guardado = JsonUtility.FromJson<CatalogoGuardado>(File.ReadAllText(RutaCatalogo));
-            if (guardado == null || guardado.servidor != Origen || !EsValido(guardado.catalogo)) return;
+            if (guardado == null || !ConfiguracionBackendAula.EsCatalogoCompatible(guardado.servidor, servidor) || !EsValido(guardado.catalogo)) return;
             catalogo = guardado.catalogo;
             TieneCatalogoValido = true;
             EsCatalogoLocal = true;
             Mensaje = "Catálogo local · Pulsa Actualizar";
+            Debug.Log("[CATALOGO-DRIVE] CATÁLOGO GUARDADO · Solo archivos con caché verificada; todavía no hay respuesta de red.", this);
             EstadoCambiado?.Invoke();
         }
         catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is ArgumentException)

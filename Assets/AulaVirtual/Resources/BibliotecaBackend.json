@@ -1,5 +1,6 @@
 {
-  "entornoEditor": "Local",
+  "entornoEditor": "Remoto",
   "urlLocal": "http://127.0.0.1:3000",
-  "urlRemota": ""
+  "urlRemota": "https://aula-virtual-inclusiva.onrender.com",
+  "compartirCatalogoGuardado": true
 }
