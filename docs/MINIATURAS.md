@@ -39,7 +39,8 @@ con hasta 128 imágenes, identificadas por servidor, ID y modificación del vide
 
 ## Probar primero en Editor
 
-1. Detener Play y esperar la compilación. Conservar `AulaPrincipal_GLB` abierta.
+1. Detener Play y esperar la compilación. Si Unity no detecta los cambios, usar Assets >
+   Refresh (Ctrl+R). Conservar `AulaPrincipal_GLB` abierta.
 2. Opcional: ejecutar Aula Virtual > Biblioteca visual > Validar miniaturas sin cambiar escena.
    Crea una fila temporal separada y comprueba componentes, regiones, botón y paginación;
    no guarda escenas ni es una certificación visual de XR.
@@ -67,6 +68,13 @@ No cambiar secretos, plan, Root Directory ni comandos de inicio por esta funcion
 - La escena principal conserva su SHA-256 respecto del respaldo.
 - Validación ejecutada en el Editor abierto: `[MINIATURAS-TEST] OK`, sin errores ni avisos;
   fila real del generador, sin duplicados ni superposición de regiones, componentes completos.
+- Render actualizó automáticamente el backend tras publicar el commit en main. Se comprobó
+  su catálogo HTTP 200 y ambas imágenes JPEG HTTP 200, con los mismos tamaños de la prueba local.
+- Prueba en Play en el Editor: `[MINIATURA-AULA] RED` confirmó las dos cargas desde
+  https://aula-virtual-inclusiva.onrender.com y se observaron ambas portadas en el pizarrón.
+  Persisten avisos previos de MediatecaSDF por U+2026 (puntos suspensivos); TMP recurre a
+  Truncate. Las imágenes sí cargaron, sin errores. La corrección del atlas queda separada
+  de esta etapa; no se modificó la fuente compartida.
 
 Pruebas reproducibles del backend:
 
